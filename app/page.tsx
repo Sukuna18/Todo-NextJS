@@ -1,6 +1,13 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Todo as TodoType, addTodo, deleteTodoById, getTodos, updateTodoById } from "./lib/api";
+import {
+  Todo as TodoType,
+  addTodo,
+  deleteTodoById,
+  getTodos,
+  updateTitleById,
+  updateTodoById,
+} from "./lib/api";
 import Todo from "./components/Todo";
 
 export default function Home() {
@@ -20,9 +27,9 @@ export default function Home() {
     let data = await deleteTodoById(id);
     setTodos(todos.filter((todo) => todo.id !== data.id));
   }
-  async function toggleTodo (id:number,completed: boolean) {
-    let data = await updateTodoById(id, {completed});
-    setTodos(todos.map((todo) => todo.id === data.id ? data : todo));
+  async function toggleTodo(id: number, completed: boolean) {
+    let data = await updateTodoById(id, { completed });
+    setTodos(todos.map((todo) => (todo.id === data.id ? data : todo)));
   }
 
   useEffect(() => {
@@ -59,7 +66,14 @@ export default function Home() {
           ) : (
             <>
               {todos.map((todo) => (
-                <Todo key={todo.id} {...todo} removeTodo={removeTodo} toggleTodo={toggleTodo}/>
+                <Todo
+                  key={todo.id}
+                  {...todo}
+                  removeTodo={removeTodo}
+                  toggleTodo={toggleTodo}
+                  setTodos={setTodos}
+                  todos={todos}
+                />
               ))}
             </>
           )}
